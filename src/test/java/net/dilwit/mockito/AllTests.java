@@ -1,5 +1,6 @@
-package net.dilwit.mockito.parking;
+package net.dilwit.mockito;
 
+import net.dilwit.mockito.parking.ParkingServiceTest;
 import net.dilwit.mockito.student.StudentServiceTest;
 
 import org.junit.runner.RunWith;

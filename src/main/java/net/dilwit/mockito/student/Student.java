@@ -14,6 +14,12 @@ public class Student {
 	private String parkingReceipt;
 	private StudentService studentService;
 	
+	/*
+	 *  Narrative:  
+		 * 	In order to drive to university  
+		 *  As a registered student for parking 
+		 * 	I want to purchase monthly parking pass via CC or PP
+	 */
 	public void purchaseMonthlyParkingPass(PaymentDetails paymentDetails) throws StudentServiceException {
 		String receiptId = studentService.purchaseMonthlyParkingPass(this, paymentDetails);
 		studentService.updateParkingReceipt(this, receiptId);

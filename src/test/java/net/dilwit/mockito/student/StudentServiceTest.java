@@ -1,8 +1,11 @@
 package net.dilwit.mockito.student;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import net.dilwit.mockito.database.DatabaseException;
 import net.dilwit.mockito.parking.ParkingService;
 import net.dilwit.mockito.parking.ParkingServiceException;
 import net.dilwit.mockito.payment.PaymentDetails;
@@ -12,6 +15,8 @@ import net.dilwit.mockito.payment.PaymentServiceException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -29,6 +34,9 @@ public class StudentServiceTest {
 	private PaymentService paymentService;
 	@Mock
 	private StudentDao studentDao;
+	
+	@Captor
+	private ArgumentCaptor<Student> studentCaptor;
 	
 	
 	@InjectMocks
@@ -79,13 +87,27 @@ public class StudentServiceTest {
 	}
 	
 	@Test (expected = StudentServiceException.class)
-	public void itShouldNotBeAbleToUpdateStudentWithParkingReceipt() {		
-		when(studentDao.updateStudent(student));		
+	public void itShouldNotBeAbleToUpdateStudentWithParkingReceipt() throws DatabaseException, StudentServiceException {		
+		
+		doThrow(DatabaseException.class).when(studentDao).updateStudent(student);
+		
+		studentService.updateParkingReceipt(student, receiptNumber);
+		verify(studentDao).updateStudent(student);
+		
+		verify(studentDao).updateStudent(studentCaptor.capture());
+		Student studentToUpdate = studentCaptor.getValue();
+		Assert.assertEquals(receiptNumber, studentToUpdate.getParkingReceipt());
 	}
 	
 	@Test
-	public void itShouldBeAbleToUpdateStudentWithParkingReceipt() {
-		Assert.fail();
+	public void itShouldBeAbleToUpdateStudentWithParkingReceipt() throws StudentServiceException, DatabaseException {
+		
+		studentService.updateParkingReceipt(student, receiptNumber);
+		verify(studentDao).updateStudent(student);
+		
+		verify(studentDao).updateStudent(studentCaptor.capture());
+		Student studentToUpdate = studentCaptor.getValue();
+		Assert.assertEquals(receiptNumber, studentToUpdate.getParkingReceipt());
 	}
 
 }

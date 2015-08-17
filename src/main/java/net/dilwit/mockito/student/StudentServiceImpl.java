@@ -19,13 +19,6 @@ public class StudentServiceImpl implements StudentService {
 	private ParkingService parkingService;
 	private PaymentService paymentService;
 	
-	/*
-	 *  Narrative:  
-		 * 	In order to drive to university  
-		 *  As a registered student for parking 
-		 * 	I want to purchase monthly parking pass via CC or PP
-	 */
-	
 	@Override
 	public String purchaseMonthlyParkingPass(Student student, PaymentDetails paymentDetails) throws StudentServiceException {
 		
