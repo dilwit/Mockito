@@ -20,10 +20,14 @@ To capture argument passed into a method.
 MockitoAnnotations.initMocks(this) 
 Initialize all annotated objects. 
 
-
 when()
+
 verify()
+
 never()
+
 doThrow()
+
 thenThrow()
+
 thenReturn()
